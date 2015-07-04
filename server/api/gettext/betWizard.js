@@ -6,7 +6,8 @@ var Messages = require('./messages.js');
 
 
 exports.findBets = function(textData, res) {
-	Bet.find({}).deepPopulate('maker responseCode').exec()
+	Bet.find({}).exists('taker', false)
+	.deepPopulate('maker responseCode').exec()
 	.then(function(bets){
 		console.log(bets);
 		text = Messages.listBets(bets);
