@@ -1,0 +1,25 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="text-center">
+        <h1 class="text-center">
+          Sign up for Wager
+        </h1>
+        <span class="step-counter"> Step (2/2) </span>
+		<h3>Give us yo number!</h3> 
+		<form class="form text-center" name="form" ng-submit="register(form)" novalidate>
+       		<div class="form-group text-center">
+	          <input id="number-form" type="text" placeholder="$$$-$$$-$$$$" onfocus="this.placeholder = ''" onblur="this.placeholder = '$$$-$$$-$$$$'" name="name" class="form-control text-center" ng-model="number" required/>
+	        </div>
+	    	<button class="btn btn-primary btn-lg btn-login" ng-click="setNumber()">
+            	Complete Sign Up!
+          	</button>
+          	<p class="step-counter">We will send you a text message with more instructions!</p>
+	    </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
