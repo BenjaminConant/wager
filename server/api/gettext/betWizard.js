@@ -70,7 +70,29 @@ exports.makeBet = function(textData, res) {
 
 
 exports.takeBet = function(textData, res) {
-
-
+	var betCode = textData.Body.split(' ')[1];
+	var codeId;
+	var userId;
+	Code.findOne({code: betCode}).exec()
+	.then(function(code){
+		codeId = code._id;
+		return User.findOne({phoneNumber: textData.From}).exec()
+	})
+	.then(function(user){
+		userId = user._id;
+		return Bet.findOne({responseCode: codeId}).exec()
+	})
+	.then(function(bet){
+		bet.taker = userId;
+		bet.dateTaken = Date.now();
+		return bet.saveAsync()
+	})
+	.then(function(bet){
+		console.log(bet);
+		Controller.respond(Messages.tookBet(), res);
+	})
+	.then(null, function(err){
+		console.log("betWizard takeBet", err);
+	})
 }
 

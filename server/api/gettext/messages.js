@@ -28,6 +28,10 @@ exports.notImplementedYet = function (){
 	return "Sorry, we dont have that feature yet \n:(";
 }
 
+exports.tookBet = function() {
+	return "You have taken the bet .... expect a text from us when it is settled"
+}
+
 exports.error = function (err){
 	return "This is akward ... looks like we got and error" + err;
 }
