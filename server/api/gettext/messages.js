@@ -32,6 +32,10 @@ exports.tookBet = function() {
 	return "You have taken the bet .... expect a text from us when it is settled"
 }
 
+exports.userProfile = function(profile) {
+	return profile.toString();
+}
+
 exports.error = function (err){
 	return "This is akward ... looks like we got and error" + err;
 }
