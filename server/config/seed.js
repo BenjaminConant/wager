@@ -118,6 +118,16 @@ League.find({}).remove().exec()
 .then(function (bet) {
   console.log("created user harleys bet code", bet);  
 })
+.then(function(){
+  User.create({
+    provider: 'local',
+    name: 'Harley',
+    role: 'admin',
+    email: 'nathanielharley@gmail.com',
+    password: 'admin',
+    phoneNumber: '+917'
+  })
+})
 .then(null, function(err){
   console.log(err);
 })
