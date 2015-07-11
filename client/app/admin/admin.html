@@ -1,7 +1,8 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
+  <button ng-click="refreshData()" class="btn btn-primary pull-right">Refresh Data</button>
+  <h3> Users </h3>
   <ul class="list-group">
     <li class="list-group-item" ng-repeat="user in users">
         <strong>{{user.name}}</strong><br>
@@ -9,4 +10,36 @@
         <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
     </li>
   </ul>
+  <h3> Taken Bets </h3>
+  	<ul class="list-group">
+	    <li class="list-group-item" ng-repeat="bet in bets" ng-show="betStatus(bet) === 'taken'">
+	        <strong>Maker: </strong> {{bet.maker.name}} | {{bet.maker.email}} | {{bet.maker.phoneNumber}}<br>
+	        <strong>Taker: </strong> {{bet.taker.name}} | {{bet.taker.email}} | {{bet.taker.phoneNumber}}<br>
+	        <div class="lead content">{{bet.content}}</div>
+	        <div class="settle-buttons">
+		        <button ng-click="makerWins(bet)" class="btn">Maker Wins</button>
+		        <button ng-click="takerWins(bet)" class="btn">Taker Wins</button>
+		        <button ng-click="noWinner(bet)" class="btn">No Winner</button>
+	    	</div>
+	        Message:
+	        <br>
+	        <textarea ng-model="bet.message" class="message"></textarea>
+	    </li>
+	 </ul>
+  <h3> Untaken Bets </h3>
+	<ul class="list-group">
+	    <li class="list-group-item" ng-repeat="bet in bets" ng-show="betStatus(bet) === 'untaken'">
+	        <strong>{{bet.maker.name}}: </strong> {{bet.maker.email}}  {{bet.maker.phoneNumber}}<br>
+	        <span class="lead">{{bet.content}}</span>
+	    </li>
+	 </ul>
+  <h3> Settled Bets </h3>
+  	<ul class="list-group">
+	    <li class="list-group-item" ng-repeat="bet in bets" ng-show="betStatus(bet) === 'settled'">
+	        <strong>Maker: </strong> {{bet.maker.name}} | {{bet.maker.email}} | {{bet.maker.phoneNumber}}<br>
+	        <strong>Taker: </strong> {{bet.taker.name}} | {{bet.taker.email}} | {{bet.taker.phoneNumber}}<br>
+	        <div class="lead content">{{bet.content}}</div>
+	        <strong>Winner: </strong> {{bet.winner.name || "no winner"}} <br>
+	    </li>
+	 </ul>
 </div>

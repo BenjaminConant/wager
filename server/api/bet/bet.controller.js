@@ -3,12 +3,30 @@
 var _ = require('lodash');
 var Bet = require('./bet.model');
 
+
 // Get list of bets
 exports.index = function(req, res) {
-  Bet.find(function (err, bets) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, bets);
-  });
+  Bet.find({}).deepPopulate('maker taker winner').exec()
+  .then(function(bets){
+    bets.forEach(function(bet){
+      bet.maker.hashedPassword = null;
+      bet.maker.salt = null;
+      if (bet.taker) {
+        bet.taker.hashedPassword = null;
+        bet.taker.salt = null;
+      }
+      if (bet.winner) {
+        bet.taker.winner = null;
+        bet.taker.winner = null;
+      }
+      console.log(bet);
+    })
+    console.log(bets);
+    res.json(200, bets);
+  })
+  .then(null, function(err){
+    console.log("delegator findBets", err);
+  })
 };
 
 // Get a single bet
@@ -35,9 +53,16 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!bet) { return res.send(404); }
     var updated = _.merge(bet, req.body);
-    updated.save(function (err) {
+    updated.save(function (err, u) {
       if (err) { return handleError(res, err); }
-      return res.json(200, bet);
+      Bet.find({_id: u._id}).deepPopulate('maker taker winner').exec()
+      .then(function(betArray){
+        console.log("populated bet", betArray)
+        return res.json(200, betArray[0]);
+      })
+      .then(null, function(err){
+        if (err) { return handleError(res, err); }
+      })
     });
   });
 };
@@ -55,5 +80,6 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
+  console.log("this is the error", err);
   return res.send(500, err);
 }
